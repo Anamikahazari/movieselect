@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
-
+import React, {useState} from 'react';
+import data from './data.json';
+import DataTable from './components/Datatable';
 function App() {
+
+  const [search,setsearch] = useState("");
+  const ChangingSearch = (event)=>{
+    setsearch(event.target.value)
+  }
+  const resultSearch = (data)=>{
+    return (
+      data.filter((eachObj)=>eachObj.Title.toLowerCase().indexOf(search) > -1  || eachObj.Year.toLowerCase().indexOf(search) > -1
+      || eachObj.Country.toLowerCase().indexOf(search) > -1)
+    );
+  }
+ 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <input id="inputBox" type="text" placeholder="search.." value={search} onChange={ChangingSearch} />
+      </div>
+      <div>
+      <DataTable data={resultSearch(data)}/>
+      </div>
+      
     </div>
   );
 }
